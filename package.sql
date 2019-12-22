@@ -54,7 +54,7 @@ END package1;
             END LOOP;
     EXCEPTION
         -- exception handlers begin
---see where errors https://docs.oracle.com/cd/B10500_01/appdev.920/a96624/07_errs.htm
+        --see where errors https://docs.oracle.com/cd/B10500_01/appdev.920/a96624/07_errs.htm
         WHEN test_exp THEN -- handles 'division by zero' error
             INSERT INTO TERRORS(ERROR, ERRORTIME)
             VALUES ('Test Exeption', SYSDATE);
@@ -63,11 +63,11 @@ END package1;
             INSERT INTO TERRORS(ERROR, ERRORTIME)
             VALUES ('Error in createjob', SYSDATE);
             COMMIT;
-
+            --logs
             INSERT INTO TJOB_EXEC_HISTO(JOB, EXECTIME)
             VALUES ('createJobs', SYSDATE);
     END;
--- executeJobs
+    -- executeJobs
     PROCEDURE executeJobs(array_ids NumberArray) AS
         elementjob RJOB;
     BEGIN
@@ -80,14 +80,14 @@ END package1;
                 INTO elementjob
                 FROM TJOB
                 WHERE id_tjob = array_ids(i);
--- execute le job
+                -- execute le job
                 DBMS_SCHEDULER.CREATE_JOB(
                         job_name => elementjob.nom,
                         job_type => elementjob.typejob,
                         job_action => elementjob.chemin
                     );
                 DBMS_SCHEDULER.run_job(elementjob.nom);
--- update date job
+                -- update date job
                 UPDATE TJOB
                 SET datederniereexecution = SYSDATE
                 WHERE id_tjob = array_ids(i);
@@ -95,11 +95,13 @@ END package1;
         INSERT INTO TJOB_EXEC_HISTO(JOB, EXECTIME)
         VALUES ('executeJobs', SYSDATE);
     END;
--- cleanJobs
+    -- cleanJobs
     PROCEDURE cleanJobs(beforeDate DATE) AS
     BEGIN
         DELETE TJOB
         WHERE datederniereexecution < beforeDate;
+
+        --logs
         INSERT INTO TJOB_EXEC_HISTO(JOB, EXECTIME)
         VALUES ('cleanJobs', SYSDATE);
     END;
