@@ -71,8 +71,9 @@ CREATE
     FOR EACH ROW
 BEGIN
     --this doesnt work because its oracle of corse ... normaly you put this on every insert but it juste bugs cause yeah you know..
---INSERT INTO TJOB_LOGS(MESSAGE, EXECTIME)
-    --  VALUES ('INSERT ACTEUR SUCCESS', SYSDATE);
+    INSERT INTO TJOB_LOGS(MESSAGE, EXECTIME)
+    VALUES ('INSERT ACTEUR SUCCESS', SYSDATE);
+    COMMIT;
     SELECT ACTEUR_SEC.nextval
     INTO :new.ID_ACTEUR
     FROM dual;

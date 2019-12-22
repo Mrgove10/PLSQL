@@ -15,7 +15,7 @@ DECLARE
     
     TYPE RJOB_ARRAY IS TABLE OF RJOB; 
     elements RJOB_ARRAY;
-    -- ajout des éléments dans ton tableau
+    -- ajout des elements dans ton tableau
 BEGIN
   PACKAGE1.createJobs(RJOB_ARRAY);
 END;
