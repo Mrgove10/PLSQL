@@ -1,11 +1,11 @@
 --fonctionne
-END;
 BEGIN 
 --clean jobs
     INSERT INTO TJOB(nom,typejob,chemin,datederniereexecution)VALUES('test1','0','chemin/du/test/1.sql','31/12/20');
     INSERT INTO TJOB(nom,typejob,chemin,datederniereexecution)VALUES('test2','0','chemin/du/test/2.sql','11/11/19');
     INSERT INTO TJOB(nom,typejob,chemin,datederniereexecution)VALUES('test3','0','chemin/du/test/3.sql','09/09/19');
     package1.cleanjobs(SYSDATE); 
+END;
 
 --ne fonctionne pas 
 DECLARE
