@@ -44,9 +44,9 @@ END package1;
                     RAISE test_exp;
                 END IF;
                 INSERT INTO TJOB(NOM,
-                                 TYPEJOB,
-                                 CHEMIN,
-                                 DATEDERNIEREEXECUTION)
+                                TYPEJOB,
+                                CHEMIN,
+                                DATEDERNIEREEXECUTION)
                 VALUES (var_table_rjob(i).NOM,
                         var_table_rjob(i).TYPEJOB,
                         var_table_rjob(i).CHEMIN,
@@ -63,10 +63,8 @@ END package1;
             INSERT INTO TERRORS(ERROR, ERRORTIME)
             VALUES ('Error in createjob', SYSDATE);
             COMMIT;
-            --logs
-            INSERT INTO TJOB_EXEC_HISTO(JOB, EXECTIME)
-            VALUES ('createJobs', SYSDATE);
     END;
+
     -- executeJobs
     PROCEDURE executeJobs(array_ids NumberArray) AS
         elementjob RJOB;
@@ -75,8 +73,8 @@ END package1;
             LOOP
                 -- recuperer le job
                 SELECT NOM,
-                       TYPEJOB,
-                       CHEMIN
+                        TYPEJOB,
+                        CHEMIN
                 INTO elementjob
                 FROM TJOB
                 WHERE id_tjob = array_ids(i);
@@ -91,10 +89,11 @@ END package1;
                 UPDATE TJOB
                 SET datederniereexecution = SYSDATE
                 WHERE id_tjob = array_ids(i);
+                INSERT INTO TJOB_EXEC_HISTO(ID_JOB, EXECTIME)
+                VALUES (id_tjob, SYSDATE);
             END LOOP;
-        INSERT INTO TJOB_EXEC_HISTO(JOB, EXECTIME)
-        VALUES ('executeJobs', SYSDATE);
     END;
+    
     -- cleanJobs
     PROCEDURE cleanJobs(beforeDate DATE) AS
     BEGIN
@@ -103,10 +102,6 @@ END package1;
         
         DELETE TJOB
         WHERE datederniereexecution < beforeDate;
-
-        --logs
-        INSERT INTO TJOB_EXEC_HISTO(JOB, EXECTIME)
-        VALUES ('cleanJobs', SYSDATE);
     END;
 END package1;
 /
