@@ -4,3 +4,4 @@
 @@triggers.sql
 @@package.sql
 @@inserts.sql
+@@jobs.sql
