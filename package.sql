@@ -60,7 +60,7 @@ END package1;
             VALUES ('Test Exeption', SYSDATE);
             COMMIT;
         WHEN OTHERS THEN --handles errors
-            INSERT INTO TERRORS(ERROR, ERRORTIME)
+            INSERT INTO TERRORS(ERRORMES, ERRORTIME)
             VALUES ('Error in createjob', SYSDATE);
             COMMIT;
     END;
@@ -93,7 +93,7 @@ END package1;
                 VALUES (id_tjob, SYSDATE);
             END LOOP;
     END;
-    
+
     -- cleanJobs
     PROCEDURE cleanJobs(beforeDate DATE) AS
     BEGIN
