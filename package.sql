@@ -56,7 +56,7 @@ END package1;
         -- exception handlers begin
         --see where errors https://docs.oracle.com/cd/B10500_01/appdev.920/a96624/07_errs.htm
         WHEN test_exp THEN -- handles 'division by zero' error
-            INSERT INTO TERRORS(ERROR, ERRORTIME)
+            INSERT INTO TERRORS(ERRORMES, ERRORTIME)
             VALUES ('Test Exeption', SYSDATE);
             COMMIT;
         WHEN OTHERS THEN --handles errors
@@ -89,19 +89,21 @@ END package1;
                 UPDATE TJOB
                 SET datederniereexecution = SYSDATE
                 WHERE id_tjob = array_ids(i);
+                --ERROR here for no reason because oracle is shit
                 INSERT INTO TJOB_EXEC_HISTO(ID_JOB, EXECTIME)
-                VALUES (id_tjob, SYSDATE);
+                VALUES (array_ids(i), SYSDATE);
             END LOOP;
     END;
 
     -- cleanJobs
     PROCEDURE cleanJobs(beforeDate DATE) AS
     BEGIN
-        DELETE TJOBS_EXEC_HISTO
-        WHERE JOB IN (SELECT ID_TJOB FROM TJOB WHERE datederniereexecution < beforeDate);
+    --ERROR here for no reason because oracle is shit
+        DELETE TJOB_EXEC_HISTO
+        WHERE ID_JOB IN (SELECT ID_TJOB FROM TJOB WHERE DATEDERNIEREEXECUTION < beforeDate);
         
         DELETE TJOB
-        WHERE datederniereexecution < beforeDate;
+        WHERE DATEDERNIEREEXECUTION < beforeDate;
     END;
 END package1;
 /
