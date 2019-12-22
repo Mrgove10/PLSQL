@@ -61,7 +61,7 @@ BEGIN
     FROM dual;
 END;
 /
-
+---------------------------------------
 --TRIGGER INSERT ACTEUR
 CREATE
     OR REPLACE TRIGGER ACTEUR_ON_INSERT
@@ -71,14 +71,34 @@ CREATE
     FOR EACH ROW
 BEGIN
     --this doesnt work because its oracle of corse ... normaly you put this on every insert but it juste bugs cause yeah you know..
-    INSERT INTO TJOB_LOGS(MESSAGE, EXECTIME)
-    VALUES ('INSERT ACTEUR SUCCESS', SYSDATE);
-    COMMIT;
+    --INSERT INTO TJOB_LOGS(MESSAGE, EXECTIME)
+    --VALUES ('INSERT ACTEUR SUCCESS', SYSDATE);
     SELECT ACTEUR_SEC.nextval
     INTO :new.ID_ACTEUR
     FROM dual;
 END;
 /
+CREATE OR REPLACE TRIGGER ACTEUR_ON_CHANGE_TRIGGER
+  AFTER INSERT OR UPDATE OR DELETE
+  ON ACTEUR
+DECLARE
+  log_action  TJOB_LOGS.MESSAGE%TYPE;
+BEGIN
+  IF INSERTING THEN
+    log_action := 'Insert';
+  ELSIF UPDATING THEN
+    log_action := 'Update';
+  ELSIF DELETING THEN
+    log_action := 'Delete';
+  ELSE
+    DBMS_OUTPUT.PUT_LINE('This code is not reachable.');
+  END IF;
+
+  INSERT INTO TJOB_LOGS(MESSAGE, EXECTIME)
+    VALUES (log_action,SYSDATE);
+END;
+/
+
 --TRIGGER INSERT CINEMA
 CREATE
     OR REPLACE TRIGGER CINEMA_ON_INSERT
@@ -144,3 +164,26 @@ BEGIN
     FROM dual;
 END;
 /
+
+--doesnt work because oracle sql is bugged as always
+--CREATE
+--    OR REPLACE TRIGGER CREATE_TABLE_TRIGGER
+--    AFTER CREATE ON SCHEMA
+--BEGIN
+--    IF SYS.DICTIONARY_OBJ_TYPE = 'TABLE' THEN
+--        INSERT INTO TJOB_LOGS(MESSAGE, EXECTIME)
+--        VALUES ('NEW TABLE CREATED', SYSDATE);
+--    END IF;
+--END;
+--/
+
+--CREATE
+--    OR REPLACE TRIGGER DELETE_TABLE_TRIGGER
+--    AFTER DROP ON SCHEMA
+--BEGIN
+--   IF SYS.DICTIONARY_OBJ_TYPE = 'TABLE' THEN
+--        INSERT INTO TJOB_LOGS(MESSAGE, EXECTIME)
+--       VALUES ('TABLE DELETED', SYSDATE);
+--    END IF;
+--END;
+--/
