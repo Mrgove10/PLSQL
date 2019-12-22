@@ -79,23 +79,23 @@ BEGIN
 END;
 /
 CREATE OR REPLACE TRIGGER ACTEUR_ON_CHANGE_TRIGGER
-  AFTER INSERT OR UPDATE OR DELETE
-  ON ACTEUR
+    AFTER INSERT OR UPDATE OR DELETE
+    ON ACTEUR
 DECLARE
-  log_action  TJOB_LOGS.MESSAGE%TYPE;
+    log_action TJOB_LOGS.MESSAGE%TYPE;
 BEGIN
-  IF INSERTING THEN
-    log_action := 'Insert';
-  ELSIF UPDATING THEN
-    log_action := 'Update';
-  ELSIF DELETING THEN
-    log_action := 'Delete';
-  ELSE
-    DBMS_OUTPUT.PUT_LINE('This code is not reachable.');
-  END IF;
+    IF INSERTING THEN
+        log_action := 'Insert in ACTEUR';
+    ELSIF UPDATING THEN
+        log_action := 'Update in ACTEUR';
+    ELSIF DELETING THEN
+        log_action := 'Delete in ACTEUR';
+    ELSE
+        DBMS_OUTPUT.PUT_LINE('This code is not reachable.');
+    END IF;
 
-  INSERT INTO TJOB_LOGS(MESSAGE, EXECTIME)
-    VALUES (log_action,SYSDATE);
+    INSERT INTO TJOB_LOGS(MESSAGE, EXECTIME)
+    VALUES (log_action, SYSDATE);
 END;
 /
 
@@ -112,6 +112,27 @@ BEGIN
     FROM dual;
 END;
 /
+CREATE OR REPLACE TRIGGER CINEMA_ON_CHANGE_TRIGGER
+    AFTER INSERT OR UPDATE OR DELETE
+    ON CINEMA
+DECLARE
+    log_action TJOB_LOGS.MESSAGE%TYPE;
+BEGIN
+    IF INSERTING THEN
+        log_action := 'Insert in CINEMA';
+    ELSIF UPDATING THEN
+        log_action := 'Update in CINEMA';
+    ELSIF DELETING THEN
+        log_action := 'Delete in CINEMA';
+    ELSE
+        DBMS_OUTPUT.PUT_LINE('This code is not reachable.');
+    END IF;
+
+    INSERT INTO TJOB_LOGS(MESSAGE, EXECTIME)
+    VALUES (log_action, SYSDATE);
+END;
+/
+
 --TRIGGER INSERT FILM
 CREATE
     OR REPLACE TRIGGER FILM_ON_INSERT
@@ -125,6 +146,28 @@ BEGIN
     FROM dual;
 END;
 /
+CREATE OR REPLACE TRIGGER FILM_ON_CHANGE_TRIGGER
+    AFTER INSERT OR UPDATE OR DELETE
+    ON FILM
+DECLARE
+    log_action TJOB_LOGS.MESSAGE%TYPE;
+BEGIN
+    IF INSERTING THEN
+        log_action := 'Insert in FILM';
+    ELSIF UPDATING THEN
+        log_action := 'Update in FILM';
+    ELSIF DELETING THEN
+        log_action := 'Delete in FILM';
+    ELSE
+        DBMS_OUTPUT.PUT_LINE('This code is not reachable.');
+    END IF;
+
+    INSERT INTO TJOB_LOGS(MESSAGE, EXECTIME)
+    VALUES (log_action, SYSDATE);
+END;
+/
+
+
 --TRIGGER INSERT ACTEUR_FILM
 CREATE
     OR REPLACE TRIGGER ACTEUR_FILM_ON_INSERT
@@ -138,6 +181,27 @@ BEGIN
     FROM dual;
 END;
 /
+CREATE OR REPLACE TRIGGER ACTEUR_FILM_ON_CHANGE_TRIGGER
+    AFTER INSERT OR UPDATE OR DELETE
+    ON ACTEUR_FILM
+DECLARE
+    log_action TJOB_LOGS.MESSAGE%TYPE;
+BEGIN
+    IF INSERTING THEN
+        log_action := 'Insert in ACTEUR_FILM';
+    ELSIF UPDATING THEN
+        log_action := 'Update in ACTEUR_FILM';
+    ELSIF DELETING THEN
+        log_action := 'Delete in ACTEUR_FILM';
+    ELSE
+        DBMS_OUTPUT.PUT_LINE('This code is not reachable.');
+    END IF;
+
+    INSERT INTO TJOB_LOGS(MESSAGE, EXECTIME)
+    VALUES (log_action, SYSDATE);
+END;
+/
+
 --TRIGGER INSERT SEANCE
 CREATE
     OR REPLACE TRIGGER SEANCE_ON_INSERT
@@ -151,6 +215,27 @@ BEGIN
     FROM dual;
 END;
 /
+CREATE OR REPLACE TRIGGER SEANCE_ON_CHANGE_TRIGGER
+    AFTER INSERT OR UPDATE OR DELETE
+    ON SEANCE
+DECLARE
+    log_action TJOB_LOGS.MESSAGE%TYPE;
+BEGIN
+    IF INSERTING THEN
+        log_action := 'Insert in SEANCE';
+    ELSIF UPDATING THEN
+        log_action := 'Update in SEANCE';
+    ELSIF DELETING THEN
+        log_action := 'Delete in SEANCE';
+    ELSE
+        DBMS_OUTPUT.PUT_LINE('This code is not reachable.');
+    END IF;
+
+    INSERT INTO TJOB_LOGS(MESSAGE, EXECTIME)
+    VALUES (log_action, SYSDATE);
+END;
+/
+
 --TRIGGER INSERT ACHAT_BILLET
 CREATE
     OR REPLACE TRIGGER ACHAT_BILLET_ON_INSERT
@@ -164,26 +249,23 @@ BEGIN
     FROM dual;
 END;
 /
+CREATE OR REPLACE TRIGGER ACHAT_BILLET_ON_CHANGE_TRIGGER
+    AFTER INSERT OR UPDATE OR DELETE
+    ON ACHAT_BILLET
+DECLARE
+    log_action TJOB_LOGS.MESSAGE%TYPE;
+BEGIN
+    IF INSERTING THEN
+        log_action := 'Insert in ACHAT_BILLET';
+    ELSIF UPDATING THEN
+        log_action := 'Update in ACHAT_BILLET';
+    ELSIF DELETING THEN
+        log_action := 'Delete in ACHAT_BILLET';
+    ELSE
+        DBMS_OUTPUT.PUT_LINE('This code is not reachable.');
+    END IF;
 
---doesnt work because oracle sql is bugged as always
---CREATE
---    OR REPLACE TRIGGER CREATE_TABLE_TRIGGER
---    AFTER CREATE ON SCHEMA
---BEGIN
---    IF SYS.DICTIONARY_OBJ_TYPE = 'TABLE' THEN
---        INSERT INTO TJOB_LOGS(MESSAGE, EXECTIME)
---        VALUES ('NEW TABLE CREATED', SYSDATE);
---    END IF;
---END;
---/
-
---CREATE
---    OR REPLACE TRIGGER DELETE_TABLE_TRIGGER
---    AFTER DROP ON SCHEMA
---BEGIN
---   IF SYS.DICTIONARY_OBJ_TYPE = 'TABLE' THEN
---        INSERT INTO TJOB_LOGS(MESSAGE, EXECTIME)
---       VALUES ('TABLE DELETED', SYSDATE);
---    END IF;
---END;
---/
+    INSERT INTO TJOB_LOGS(MESSAGE, EXECTIME)
+    VALUES (log_action, SYSDATE);
+END;
+/

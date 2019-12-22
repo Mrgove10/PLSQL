@@ -98,6 +98,9 @@ END package1;
     -- cleanJobs
     PROCEDURE cleanJobs(beforeDate DATE) AS
     BEGIN
+        DELETE TJOBS_EXEC_HISTO
+        WHERE JOB IN (SELECT ID_TJOB FROM TJOB WHERE datederniereexecution < beforeDate);
+        
         DELETE TJOB
         WHERE datederniereexecution < beforeDate;
 
